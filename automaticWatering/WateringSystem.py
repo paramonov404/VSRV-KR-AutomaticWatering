@@ -1,7 +1,7 @@
-import paho.mqtt.client as mqtt
+import paho.mqtt.client as mqtt                  # Библиотека для работы с MQTT
 import time
-import schedule
-import smtplib
+import schedule                                  # Библиотека планировщика периодических заданий
+import smtplib                                   # Библиотека для отправки электронной почты.
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
@@ -126,12 +126,11 @@ def MQTT_init():
 
 addr_from = "oleg.paramonov.404@gmail.com"      # Адресат
 addr_to   = "ParamonovOleg.67@yandex.ru"        # Получатель
-password  = "dfwolxspbtdixfhv"                  # Пароль
+password  = "password"                  # Пароль
 
 msg = MIMEMultipart()                           # Создаем сообщение
 msg['From']    = addr_from                      # Адресат
 msg['To']      = addr_to                        # Получатель
-
 
 # Отправка оповещения по электронной почте
 def send_mail(message_subject):
@@ -157,16 +156,16 @@ client.on_disconnect = on_disconnect
 client.on_message = on_message
 
 # Инициализация класса системы.
-water_system = WateringSystem(     0,    # Минимальный уровень воды резервуара (л)
-                                1000,    # Максимальный уровень воды резервуара (л)
-                                  15,    # Расход воды на полив (л/с)
-                                   5,    # Дозалив воды в резервуар (л/c)
-                               False,    # Состояние работы насоса (включен/отключен)
-                                 600,    # Показания датчика уровня воды (л)
-                                 400,    # Показания датчика уровня влажности почвы (ед)
-                                False)   # Флаг последнего тревожного сообщения
-MQTT_init()
+water_system = WateringSystem(     0,  # Минимальный уровень воды резервуара (л)
+                                1000,  # Максимальный уровень воды резервуара (л)
+                                  15,  # Расход воды на полив (л/с)
+                                   5,  # Дозалив воды в резервуар (л/c)
+                               False,  # Состояние работы насоса (включен/отключен)
+                                 600,  # Показания датчика уровня воды (л)
+                                 400,  # Показания датчика уровня влажности почвы (ед)
+                                False) # Флаг последнего тревожного сообщения
 
+MQTT_init()
 while True:
     water_system.print_info()
     schedule.run_pending()
@@ -174,12 +173,12 @@ while True:
           "Введите команду Start для возобновления работы.\n"
           "Введите любое значение для вывода состояния системы.\n")
     try:
-        x = input()
+        Command = input()
     except KeyboardInterrupt:
         print('Исключение KeyboardInterrupt')
 
-    if x == "Stop":
+    if Command == "Stop":
         client.loop_stop()
         client.disconnect()
-    elif x == "Start":
+    elif Command == "Start":
         MQTT_init()
