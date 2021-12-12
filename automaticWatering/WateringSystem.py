@@ -126,7 +126,7 @@ def MQTT_init():
 
 addr_from = "oleg.paramonov.404@gmail.com"      # Адресат
 addr_to   = "ParamonovOleg.67@yandex.ru"        # Получатель
-password  = "password"                  # Пароль
+password  = "password"                          # Пароль
 
 msg = MIMEMultipart()                           # Создаем сообщение
 msg['From']    = addr_from                      # Адресат
